@@ -8,7 +8,7 @@ class SQL_atm:
 
     @staticmethod
     def create_table():
-        with psycopg2.connect(database = 'atm', user='postgres', password='17030508', host='localhost') as db:
+        with psycopg2.connect(database = 'atm', user='login', password='pass', host='localhost') as db:
             cur=db.cursor()
             cur.execute("""CREATE TABLE IF NOT EXISTS users_data(
             userid BIGSERIAL PRIMARY KEY,
@@ -20,7 +20,7 @@ class SQL_atm:
 
     @staticmethod
     def insert_users(num_c,pin,bal,phone_number):
-        with psycopg2.connect(database = 'atm', user='postgres', password='17030508', host='localhost') as db:
+        with psycopg2.connect(database = 'atm', user='login', password='pass', host='localhost') as db:
             cur=db.cursor()
             cur.execute(f"""INSERT INTO users_data(number_card,pin_code,balance,phone_number) 
             VALUES({num_c},{pin},{bal},'{phone_number}');""")
@@ -28,7 +28,7 @@ class SQL_atm:
     @staticmethod
     def input_card(num_card):
         try:
-            with psycopg2.connect(database='atm', user='postgres', password='17030508', host='localhost') as db:
+            with psycopg2.connect(database='atm', user='login', password='pass', host='localhost') as db:
                 cur = db.cursor()
                 cur.execute(f"""SELECT number_card FROM users_data WHERE number_card = {num_card};""")
                 res = cur.fetchone()
@@ -45,7 +45,7 @@ class SQL_atm:
     def input_pin(num_card):
         pin_code = input("Введите ваш пин-код: ")
         try:
-            with psycopg2.connect(database='atm', user='postgres', password='17030508', host='localhost') as db:
+            with psycopg2.connect(database='atm', user='login', password='pass', host='localhost') as db:
                 cur = db.cursor()
                 cur.execute(f"""SELECT pin_code FROM users_data WHERE number_card = {num_card};""")
                 res = cur.fetchone()[0]
@@ -61,7 +61,7 @@ class SQL_atm:
 
     @staticmethod
     def info_balance(num_card):
-        with psycopg2.connect(database='atm', user='postgres', password='17030508', host='localhost') as db:
+        with psycopg2.connect(database='atm', user='login', password='pass', host='localhost') as db:
             cur = db.cursor()
             cur.execute(f"""SELECT balance FROM users_data WHERE number_card = {num_card};""")
             res_inf_bal = cur.fetchone()[0]
@@ -71,7 +71,7 @@ class SQL_atm:
     def withdraw_money(num_card):
         amount = input("Введите сумму которую желаете снять: ")
         try:
-            with psycopg2.connect(database='atm', user='postgres', password='17030508', host='localhost') as db:
+            with psycopg2.connect(database='atm', user='login', password='pass', host='localhost') as db:
                 cur = db.cursor()
                 cur.execute(f"""SELECT balance FROM users_data WHERE number_card = {num_card};""")
                 res_inf_bal = cur.fetchone()[0]
@@ -95,7 +95,7 @@ class SQL_atm:
     @staticmethod
     def depositing_money(num_card):
         amount = input("Введите сумму которую желаете положить: ")
-        with psycopg2.connect(database='atm', user='postgres', password='17030508', host='localhost') as db:
+        with psycopg2.connect(database='atm', user='login', password='pass', host='localhost') as db:
             cur = db.cursor()
             try:
                 if int(amount) > 0:
@@ -144,7 +144,7 @@ class SQL_atm:
     def transfer_money(num_card):
         trans_num = input("Введите номер карты пользователя для перевода денежных средств: ")
         if trans_num != num_card:
-            with psycopg2.connect(database='atm', user='postgres', password='17030508', host='localhost') as db:
+            with psycopg2.connect(database='atm', user='login', password='pass', host='localhost') as db:
                 cur = db.cursor()
                 try:
                     cur.execute(f"""SELECT number_card FROM users_data WHERE number_card = {trans_num};""")
@@ -200,7 +200,7 @@ class SQL_atm:
     def show_phone_number(num_card):
         print("Пожалуйста, введите пин-код еще раз для подтверждения операции ")
         if SQL_atm.input_pin(num_card):
-            with psycopg2.connect(database='atm',user='postgres',password='17030508',host='localhost') as db:
+            with psycopg2.connect(database='atm',user='login',password='pass',host='localhost') as db:
                 cur = db.cursor()
                 cur.execute(f"""SELECT phone_number FROM users_data WHERE number_card = '{num_card}';""")
                 res=cur.fetchone()[0]
@@ -212,7 +212,7 @@ class SQL_atm:
         number = input("Введите номер телефона, баланс которого желаете пополнить, учитывая, что номер должен начинаться с '+7': ")
         try:
             if number[:2]=='+7' and len(number)==12 and int(number[1:]):
-                with psycopg2.connect(database='mobile_calls',user='postgres',password='17030508',host='localhost') as db:
+                with psycopg2.connect(database='mobile_calls',user='login',password='pass',host='localhost') as db:
                     cur=db.cursor()
                     cur.execute(f"""SELECT phone_number FROM mobile_users WHERE phone_number = '{number}'; """)
                     res = cur.fetchone()
@@ -229,7 +229,7 @@ class SQL_atm:
                                     WHERE phone_number = '{number}';""")
 
                                     """Списываю деньги со счета в банке"""
-                                    with psycopg2.connect(database='atm',user='postgres',password='17030508',host='localhost') as db2:
+                                    with psycopg2.connect(database='atm',user='login',password='pass',host='localhost') as db2:
                                         curs=db2.cursor()
                                         curs.execute(f"""UPDATE users_data 
                                         SET balance = balance - {int(sum_of_transf)}
