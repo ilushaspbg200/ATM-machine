@@ -3,7 +3,7 @@ from psycopg2 import Error
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 from sql_query import SQL_atm
 """Создание базы данных (если требуется)"""
-# db = psycopg2.connect(user='postgres',password='17030508',host='localhost')
+# db = psycopg2.connect(user='login',password='pass',host='localhost')
 # db.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
 # curs = db.cursor()
 # curs.execute("""CREATE DATABASE atm;""")
